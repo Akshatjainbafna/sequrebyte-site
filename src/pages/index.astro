@@ -316,10 +316,10 @@ const prove = [
         </div>
         <div class="reveal">
           {homeFaq.map(([q, a]) => (
-            <div class="faq-item">
-              <h3>{q}</h3>
-              <p>{a}</p>
-            </div>
+            <details class="faq-item" name="faq-home">
+              <summary><h3>{q}</h3><span class="chev" aria-hidden="true"></span></summary>
+              <div class="faq-a"><p>{a}</p></div>
+            </details>
           ))}
         </div>
       </div>

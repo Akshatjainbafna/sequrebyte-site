@@ -358,7 +358,6 @@ section { padding-block: clamp(96px, 10vw, 128px) clamp(72px, 9vw, 120px); posit
 .home-faq { background: var(--white); }
 .home-faq .faq-wrap { display: grid; gap: 40px; }
 @media (min-width: 900px) { .home-faq .faq-wrap { grid-template-columns: 0.8fr 1.2fr; gap: 72px; } }
-.home-faq .faq-item:first-child { border-top: 0; padding-top: 0; }
 .guides { background: var(--surface); border-top: 1px solid var(--border); }
 .guides-grid { display: grid; gap: 40px; margin-top: 32px; }
 @media (min-width: 900px) { .guides-grid { grid-template-columns: 1fr 1fr; gap: 64px; } }
@@ -367,3 +366,20 @@ section { padding-block: clamp(96px, 10vw, 128px) clamp(72px, 9vw, 120px); posit
 .who-col h3 a:hover { color: var(--brand); text-decoration: underline; }
 
 .foot-legal { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+
+/* FAQ accordion */
+.faq-item { padding: 0; border-top: 1px solid var(--border); }
+.faq-item:last-of-type { border-bottom: 1px solid var(--border); }
+.faq-item summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 64px; padding: 14px 0; cursor: pointer; list-style: none; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary h3 { margin: 0; font-size: 1.0625rem; font-weight: 650; letter-spacing: -0.01em; transition: color 0.3s var(--ease); }
+.faq-item summary:hover h3 { color: var(--brand); }
+.faq-item summary:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
+.chev { position: relative; flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); transition: background-color 0.3s var(--ease), transform 0.5s var(--ease); }
+.chev::before, .chev::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; margin: -1px 0 0 -6px; border-radius: 2px; background: var(--ink); transition: transform 0.5s var(--ease); }
+.chev::after { transform: rotate(90deg); }
+.faq-item[open] .chev { background: var(--sky); border-color: var(--sky); transform: rotate(180deg); }
+.faq-item[open] .chev::after { transform: rotate(0deg); }
+.faq-a { padding: 0 52px 20px 0; animation: faq-in 0.45s var(--ease); }
+.faq-a p { margin: 0; color: var(--text-dim); max-width: 68ch; }
+@keyframes faq-in { from { opacity: 0; transform: translateY(-6px); } }

@@ -78,10 +78,10 @@ const schema = [
       <section class="a-sec faq" aria-labelledby="faq-h">
         <h2 id="faq-h">Common questions</h2>
         {page.faqs.map(([q, a]) => (
-          <div class="faq-item">
-            <h3>{q}</h3>
-            <p>{a}</p>
-          </div>
+          <details class="faq-item" name="faq-page">
+            <summary><h3>{q}</h3><span class="chev" aria-hidden="true"></span></summary>
+            <div class="faq-a"><p>{a}</p></div>
+          </details>
         ))}
       </section>
 
