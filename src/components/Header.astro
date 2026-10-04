@@ -4,7 +4,7 @@ const { home = false } = Astro.props;
 const p = home ? '' : '/';
 ---
 <div class="progress" id="progress" aria-hidden="true"></div>
-<header class="site-header on-ink">
+<header class={`site-header on-ink${home ? "" : " is-light"}`}>
   <div class="wrap">
     <a href={home ? '#main' : '/'} aria-label="SequreByte home"><Logo /></a>
     {home && (

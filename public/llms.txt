@@ -1,0 +1,17 @@
+# SequreByte
+
+> SequreByte is a vulnerability management and compliance-readiness platform. It scans web apps (including behind a login), dependencies and SBOMs, AWS and Azure cloud posture, TLS certificates, external attack surface, ports and signatures, and firewall rulesets, then maps findings onto ISO/IEC 27001:2022, ISO/IEC 27001:2013, SOC 2 and the RBI Cyber Security Framework and keeps dated evidence. It imports reports from Nessus, OpenVAS and SonarQube.
+
+SequreByte does not issue SOC 2 reports or ISO 27001 certificates; those come from independent auditors and accredited certification bodies.
+
+## Guides
+- [Security audit for vibe-coded apps](/vibe-coded-app-security/)
+- [SOC 2 for startups](/soc-2-for-startups/)
+- [ISO 27001 for startups](/iso-27001-for-startups/)
+- [RBI Cyber Security Framework](/rbi-cyber-security-framework/)
+
+## By role
+- [Founders and solopreneurs](/for/founders/)
+- [CISOs and security leads](/for/security-leads/)
+- [Security architects](/for/security-architects/)
+- [VAPT teams and MSSPs](/for/vapt-teams/)

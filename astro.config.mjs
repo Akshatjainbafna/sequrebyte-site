@@ -6,7 +6,9 @@ const site = process.env.SITE_URL || 'https://sequrebyte.example';
 
 export default defineConfig({
   site,
-  integrations: [sitemap()],
+  trailingSlash: 'always',
+  // Legal pages are stubs (noindex) until final wording lands, so keep them out of the sitemap too.
+  integrations: [sitemap({ filter: (page) => !/\/(privacy|terms)\/?$/.test(page) })],
   build: {
     // Keep CSS/JS in external files so the CSP needs no 'unsafe-inline' for scripts or styles.
     inlineStylesheets: 'never',

@@ -6,21 +6,39 @@ interface Props {
   description: string;
   path?: string;
   noindex?: boolean;
+  schema?: Record<string, unknown>[];
+  ogType?: string;
 }
-const { title, description, path = '/', noindex = false } = Astro.props;
-const canonical = new URL(path, Astro.site).href;
+const { title, description, path, noindex = false, schema = [], ogType = 'website' } = Astro.props;
+// One canonical form everywhere: trailing slash, matching the sitemap.
+const rawPath = path ?? Astro.url.pathname;
+const canonicalPath = rawPath.endsWith('/') ? rawPath : rawPath + '/';
+const canonical = new URL(canonicalPath, Astro.site).href;
 const ogImage = new URL('/og.png', Astro.site).href;
 // Cookie-free analytics. Set PUBLIC_PLAUSIBLE_DOMAIN at build time to enable.
 const plausible = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
 
-const org = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'SequreByte',
-  url: new URL('/', Astro.site).href,
-  // TODO: add logo URL, legal name and contactPoint once supplied.
-  description,
-};
+const origin = new URL('/', Astro.site).href;
+const graph = [
+  {
+    '@type': 'Organization',
+    '@id': origin + '#org',
+    name: 'SequreByte',
+    url: origin,
+    // TODO: add logo URL, legal name, sameAs profiles and contactPoint once supplied.
+    description: 'Vulnerability management and compliance-readiness platform for ISO/IEC 27001, SOC 2 and the RBI Cyber Security Framework.',
+  },
+  {
+    '@type': 'WebSite',
+    '@id': origin + '#website',
+    url: origin,
+    name: 'SequreByte',
+    publisher: { '@id': origin + '#org' },
+    inLanguage: 'en',
+  },
+  ...schema,
+];
+const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
 ---
 
 <!doctype html>
@@ -36,7 +54,12 @@ const org = {
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SequreByte: vulnerability scanning that does its own homework" />
+    <meta name="theme-color" content="#0a1633" />
     <meta property="og:site_name" content="SequreByte" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -55,7 +78,7 @@ const org = {
     />
 
     <script is:inline src="/js/boot.js"></script>
-    <script type="application/ld+json" set:html={JSON.stringify(org)} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     {plausible && <script defer data-domain={plausible} src="https://plausible.io/js/script.js" />}
   </head>
   <body>

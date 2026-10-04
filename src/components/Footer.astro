@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import { pages } from '../data/pages.js';
 ---
 <footer class="site-footer on-ink">
   <div class="wrap">
@@ -12,10 +13,15 @@ import Logo from './Logo.astro';
         <a href="mailto:hello@sequrebyte.example">hello@sequrebyte.example</a>
       </address>
     </div>
-    <nav class="foot-links" aria-label="Legal">
-      <a href="/privacy">Privacy policy</a>
-      <a href="/terms">Terms</a>
-    </nav>
+    <div>
+      <nav class="foot-links" aria-label="Guides and roles">
+        {pages.map((p) => <a href={`/${p.slug}/`}>{p.nav}</a>)}
+      </nav>
+      <nav class="foot-links foot-legal" aria-label="Legal">
+        <a href="/privacy/">Privacy policy</a>
+        <a href="/terms/">Terms</a>
+      </nav>
+    </div>
     <p class="foot-fine">&copy; {new Date().getFullYear()} SequreByte. Every number and screenshot on this site comes from the running product.</p>
   </div>
 </footer>
