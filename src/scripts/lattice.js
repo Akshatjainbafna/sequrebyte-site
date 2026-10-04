@@ -75,25 +75,25 @@ export function mount(canvas, mode) {
     w = Math.max(1, Math.round(canvas.clientWidth || r.width)); h = Math.max(1, Math.round(canvas.clientHeight || r.height));
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    camera.position.z = (mode === 'honest' ? 21 : 15.5) / Math.min(1, camera.aspect * 1.1);
+    camera.position.z = (mode === 'bg' ? 19 : 15.5) / Math.min(1, camera.aspect * 1.1);
     camera.updateProjectionMatrix();
     draw();
   };
   const readScroll = () => {
-    const r = canvas.getBoundingClientRect();
-    p = Math.min(1, Math.max(0, (innerHeight * 0.95 - r.top) / (innerHeight * 0.85)));
+    const r = canvas.parentElement.getBoundingClientRect();
+    p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
   };
 
   function draw(t = 0) {
     pSmooth += (p - pSmooth) * (reduced ? 1 : 0.08);
-    const drift = mode === 'honest' ? pSmooth : 0;
+    const drift = mode === 'bg' ? pSmooth : 0;
     cubes.forEach((cube, i) => {
       const wave = Math.max(0, Math.sin(t * 1.4 - cube.pos.y * 0.9)) ** 8; // scan wave sweeping upward
       const bob = mode === 'hero' && !reduced ? Math.sin(t * 0.9 + cube.phase) * 0.06 : 0;
       dummy.position.copy(cube.pos).addScalar(bob);
       let s = 1 + (mode === 'hero' && !reduced ? wave * 0.28 : 0);
       dummy.rotation.set(0, 0, 0);
-      if (mode === 'honest' && cube.state === 3) {
+      if (mode === 'bg' && cube.state === 3) {
         dummy.position.addScaledVector(cube.dir, drift * 3.4);
         dummy.rotation.set(drift * 2.4 * cube.dir.x, drift * 3 * cube.dir.y, 0);
         s *= 1 - 0.4 * drift;
@@ -110,9 +110,10 @@ export function mount(canvas, mode) {
       group.rotation.y = (reduced ? 0.6 : t * 0.16) + mx * 0.45;
       group.rotation.x = 0.4 + my * 0.3;
     } else {
-      group.scale.setScalar(1.0);
-      group.rotation.y = 0.35 + pSmooth * 1.1;
-      group.rotation.x = 0.35;
+      group.position.set(w > 900 ? 4.6 : 0, 0, 0);
+      group.scale.setScalar(w > 900 ? 1.45 : 1.25);
+      group.rotation.y = (reduced ? 0.6 : t * 0.12) + pSmooth * 0.9;
+      group.rotation.x = 0.4;
     }
     renderer.render(scene, camera);
   }
@@ -123,7 +124,7 @@ export function mount(canvas, mode) {
   let running = false, raf = 0;
   const loop = (ms) => { draw(ms / 1000); raf = running ? requestAnimationFrame(loop) : 0; };
   const onScroll = () => { readScroll(); if (reduced || !running) draw(performance.now() / 1000); };
-  if (mode === 'honest') { addEventListener('scroll', onScroll, { passive: true }); readScroll(); pSmooth = p; }
+  if (mode === 'bg') { addEventListener('scroll', onScroll, { passive: true }); readScroll(); pSmooth = p; }
   if (mode === 'hero' && !reduced && !matchMedia('(pointer: coarse)').matches) {
     addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
   }

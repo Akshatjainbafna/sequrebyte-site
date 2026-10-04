@@ -15,36 +15,6 @@
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = matchMedia('(pointer: fine)').matches;
 
-  // "What counts?" explorer: also tells the 3D lattice which state to light up
-  var out = document.getElementById('explain');
-  var btns = document.querySelectorAll('[data-state]');
-  var order = ['ok', 'bad', 'idle', 'warn'];
-  var copy = {
-    ok: ['Satisfied', 'Counts toward readiness. Open it and you see which automated checks passed, which named resources they ran against, and the date and account.'],
-    bad: ['Failed', 'Counts toward readiness, and not in your favour. A check ran and it did not pass.'],
-    idle: ['Not yet assessed', 'Never shown as green. Until a scan covers the control, it says so.'],
-    warn: ['Needs manual evidence', 'Left out of the percentage, because software cannot judge it. The excluded count sits next to every figure.']
-  };
-  btns.forEach(function (b) {
-    b.addEventListener('click', function () {
-      var key = b.getAttribute('data-state');
-      var already = b.getAttribute('aria-pressed') === 'true';
-      btns.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
-      out.innerHTML = '';
-      if (already) {
-        var t0 = document.createElement('b'); t0.textContent = 'Pick a state';
-        out.appendChild(t0); out.appendChild(document.createTextNode('See whether it counts toward readiness, and watch those controls light up in the lattice above.'));
-        window.dispatchEvent(new CustomEvent('sb-state', { detail: -1 }));
-        return;
-      }
-      b.setAttribute('aria-pressed', 'true');
-      var c = copy[key];
-      var t = document.createElement('b'); t.textContent = c[0];
-      out.appendChild(t); out.appendChild(document.createTextNode(c[1]));
-      window.dispatchEvent(new CustomEvent('sb-state', { detail: order.indexOf(key) }));
-    });
-  });
-
   // Scroll progress bar
   var bar = document.getElementById('progress');
   if (bar) {

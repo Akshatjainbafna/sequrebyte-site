@@ -144,6 +144,7 @@ const prove = [
 
     <!-- HONEST READINESS -->
     <section class="honest on-ink" id="readiness" aria-labelledby="honest-h">
+      <div class="honest-bg" aria-hidden="true"><canvas class="gl" data-lattice="bg"></canvas></div>
       <div class="wrap">
         <div class="reveal">
           <p class="eyebrow">Honest readiness</p>
@@ -159,35 +160,23 @@ const prove = [
           </p>
         </div>
 
-        <div class="lattice-stage reveal" role="img" aria-label="Illustration: a 3D lattice of controls coloured by state. As you scroll, the controls that need manual evidence drift away from the lattice, showing they are excluded from the readiness percentage.">
-          <canvas class="gl" data-lattice="honest" aria-hidden="true"></canvas>
-          <div class="lattice-legend" aria-hidden="true">
-            <span>Illustration, not product data</span>
-            <span>Scroll: manual-evidence controls drift out of the percentage</span>
-          </div>
-        </div>
-
-        <div class="honest-grid">
-          <div class="reveal">
-            <!-- TODO: real screenshot of the four control states with the excluded-count caption visible. -->
-            <figure class="shot" role="img" aria-label="Screenshot placeholder: control states with the excluded count shown next to the readiness figure">
-              <div><b>Screenshot goes here</b>Four control states + excluded-count caption<br /><code>1600 &times; 1000 &middot; webp</code></div>
-            </figure>
-            <p class="caption">Readiness covers assessed controls only. The excluded count is shown next to every figure.</p>
-          </div>
-
-          <div class="explorer reveal">
-            <h3>Tap a state. Does it count?</h3>
-            <div class="explorer-btns">
-              {states.map((s) => (
-                <button type="button" class={`chip ${s.k}`} data-state={s.k} aria-pressed="false">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.k]} />
-                  {s.label}
-                </button>
-              ))}
+        <div class="walk reveal">
+          <div class="walk-frame">
+            <!-- TODO: swap this placeholder for the real walkthrough (real product, redacted data):
+                 <video controls preload="none" playsinline poster="/media/walkthrough-poster.webp" width="1920" height="1080">
+                   <source src="/media/walkthrough.webm" type="video/webm" />
+                   <source src="/media/walkthrough.mp4" type="video/mp4" />
+                   <track kind="captions" src="/media/walkthrough.en.vtt" srclang="en" label="English" default />
+                 </video> -->
+            <div class="walk-video" role="img" aria-label="Placeholder for the product walkthrough video">
+              <div class="walk-ph">
+                <span class="play" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 001.5.86l11-6.5a1 1 0 000-1.72l-11-6.5A1 1 0 008 5.5z"/></svg></span>
+                <b>Product walkthrough goes here</b>
+                <span>16:9 &middot; real product, redacted data &middot; captions included</span>
+              </div>
             </div>
-            <div class="explain" id="explain" aria-live="polite"><b>Pick a state</b>See whether it counts toward readiness, and watch those controls light up in the lattice above.</div>
           </div>
+          <p class="caption">From first scan to a control you can cite. Recorded in the running product.</p>
         </div>
 
         <p class="lede reveal gap-lg">
