@@ -31,7 +31,7 @@
   // Header glass flips light/dark depending on what is under it
   var header = document.querySelector('.site-header');
   if (header) {
-    var lightSel = '.problem, .what, .names, .who, .prose, .lost, .article';
+    var lightSel = '.problem, .what, .names, .who, .guides, .home-faq, .prose, .lost, .article';
     var pending = false;
     var probe = function () {
       pending = false;

@@ -52,7 +52,20 @@ const homeSchema = [
   },
 ];
 const guides = pages.filter((p) => p.group === 'Guides');
+const featured = guides[0];
+const moreGuides = guides.slice(1);
 const roles = pages.filter((p) => p.group === 'By role');
+// One outline family, 1.75 stroke, 24px grid.
+const tileIcons: Record<string, string> = {
+  'vibe-coded-app-security': '<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',
+  'soc-2-for-startups': '<path d="M7 3h7l4 4v14H7zM14 3v4h4M10 14l2 2 4-4"/>',
+  'iso-27001-for-startups': '<circle cx="12" cy="9" r="5"/><path d="M9 13.5L8 21l4-2 4 2-1-7.5"/>',
+  'rbi-cyber-security-framework': '<path d="M3 9l9-5 9 5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>',
+  'for/founders': '<path d="M12 3c3 2 5 5 5 9l-2 3H9l-2-3c0-4 2-7 5-9zM9 15l-2 4 3-1M15 15l2 4-3-1"/><circle cx="12" cy="9.5" r="1.2"/>',
+  'for/security-leads': '<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+  'for/security-architects': '<path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5"/>',
+  'for/vapt-teams': '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 2.5-6 6-6s6 2.5 6 6M15.5 14.5c3 0 5.5 2 5.5 5.5"/>',
+};
 
 const find = [
   ['Logs in and crawls your web apps,', 'including everything behind the login.'],
@@ -292,23 +305,55 @@ const prove = [
     <!-- GUIDES -->
     <section class="guides" aria-labelledby="guides-h">
       <div class="wrap">
-        <div class="reveal">
+        <div class="reveal guides-head">
           <h2 id="guides-h">New to security audits? Start here.</h2>
           <p class="lede gap">Plain-English guides for founders, and straight answers for the people who have to sign off.</p>
         </div>
-        <div class="guides-grid reveal">
-          <div>
-            <h3>Guides</h3>
-            <ul class="a-links">
-              {guides.map((g) => <li><a href={`/${g.slug}/`}>{g.nav}</a><span>{g.blurb}</span></li>)}
-            </ul>
-          </div>
-          <div>
-            <h3>By role</h3>
-            <ul class="a-links">
-              {roles.map((g) => <li><a href={`/${g.slug}/`}>{g.nav}</a><span>{g.blurb}</span></li>)}
-            </ul>
-          </div>
+
+        <h3 class="tile-label reveal">Guides</h3>
+        <div class="bento reveal">
+          <a class="tile tile-feat" href={`/${featured.slug}/`}>
+            <span class="tile-tag">Start here</span>
+            <svg class="feat-art" viewBox="0 0 240 150" aria-hidden="true" focusable="false">
+              <rect x="6" y="8" width="228" height="134" rx="14" class="art-win" />
+              <circle cx="22" cy="24" r="3.5" class="art-dot" /><circle cx="34" cy="24" r="3.5" class="art-dot" /><circle cx="46" cy="24" r="3.5" class="art-dot" />
+              <rect x="24" y="44" width="92" height="7" rx="3.5" class="art-line" />
+              <rect x="24" y="60" width="140" height="7" rx="3.5" class="art-line" />
+              <rect x="24" y="76" width="112" height="7" rx="3.5" class="art-bad" />
+              <rect x="24" y="92" width="168" height="7" rx="3.5" class="art-line" />
+              <rect x="24" y="108" width="76" height="7" rx="3.5" class="art-line" />
+              <circle cx="190" cy="82" r="17" class="art-lens" /><path d="M202.5 94.5L216 108" class="art-lens-h" />
+              <path d="M183 82l5 5 9-10" class="art-check" />
+            </svg>
+            <span class="tile-body">
+              <span class="tile-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={tileIcons[featured.slug]} /></span>
+              <span class="tile-title">{featured.nav}</span>
+              <span class="tile-desc">{featured.blurb}</span>
+            </span>
+            <span class="tile-arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+          </a>
+          {moreGuides.map((g) => (
+            <a class="tile tile-wide" href={`/${g.slug}/`}>
+              <span class="tile-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={tileIcons[g.slug]} /></span>
+              <span class="tile-body">
+                <span class="tile-title">{g.nav}</span>
+                <span class="tile-desc">{g.blurb}</span>
+              </span>
+              <span class="tile-arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+            </a>
+          ))}
+        </div>
+
+        <h3 class="tile-label reveal">By role</h3>
+        <div class="role-grid reveal">
+          {roles.map((g) => (
+            <a class="tile tile-role" href={`/${g.slug}/`}>
+              <span class="tile-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={tileIcons[g.slug]} /></span>
+              <span class="tile-title">{g.nav}</span>
+              <span class="tile-desc">{g.blurb}</span>
+              <span class="tile-arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
