@@ -75,7 +75,7 @@ export function mount(canvas, mode) {
     w = Math.max(1, Math.round(canvas.clientWidth || r.width)); h = Math.max(1, Math.round(canvas.clientHeight || r.height));
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    camera.position.z = (mode === 'honest' ? 17 : 15.5) / Math.min(1, camera.aspect * 1.1);
+    camera.position.z = (mode === 'honest' ? 21 : 15.5) / Math.min(1, camera.aspect * 1.1);
     camera.updateProjectionMatrix();
     draw();
   };
@@ -94,7 +94,7 @@ export function mount(canvas, mode) {
       let s = 1 + (mode === 'hero' && !reduced ? wave * 0.28 : 0);
       dummy.rotation.set(0, 0, 0);
       if (mode === 'honest' && cube.state === 3) {
-        dummy.position.addScaledVector(cube.dir, drift * 5.2);
+        dummy.position.addScaledVector(cube.dir, drift * 3.4);
         dummy.rotation.set(drift * 2.4 * cube.dir.x, drift * 3 * cube.dir.y, 0);
         s *= 1 - 0.4 * drift;
       }
@@ -110,6 +110,7 @@ export function mount(canvas, mode) {
       group.rotation.y = (reduced ? 0.6 : t * 0.16) + mx * 0.45;
       group.rotation.x = 0.4 + my * 0.3;
     } else {
+      group.scale.setScalar(1.0);
       group.rotation.y = 0.35 + pSmooth * 1.1;
       group.rotation.x = 0.35;
     }
