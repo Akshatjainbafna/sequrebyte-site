@@ -1,0 +1,19 @@
+---
+import Logo from './Logo.astro';
+const { home = false } = Astro.props;
+const p = home ? '' : '/';
+---
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="site-header on-ink">
+  <div class="wrap">
+    <a href={home ? '#main' : '/'} aria-label="SequreByte home"><Logo /></a>
+    {home && (
+      <nav class="nav" aria-label="On this page">
+        <a href="#how" data-nav>What it does</a>
+        <a href="#readiness" data-nav>Honest readiness</a>
+        <a href="#frameworks" data-nav>Frameworks</a>
+      </nav>
+    )}
+    <a class="btn btn-primary" data-magnet href={`${p}#demo`}>Book a demo</a>
+  </div>
+</header>

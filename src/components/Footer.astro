@@ -1,0 +1,21 @@
+---
+import Logo from './Logo.astro';
+---
+<footer class="site-footer on-ink">
+  <div class="wrap">
+    <div>
+      <Logo />
+      <address>
+        <!-- TODO: registered company name, address and contact email (supplied by the client) -->
+        [Registered company name]<br />
+        [Registered address]<br />
+        <a href="mailto:hello@sequrebyte.example">hello@sequrebyte.example</a>
+      </address>
+    </div>
+    <nav class="foot-links" aria-label="Legal">
+      <a href="/privacy">Privacy policy</a>
+      <a href="/terms">Terms</a>
+    </nav>
+    <p class="foot-fine">&copy; {new Date().getFullYear()} SequreByte. Every number and screenshot on this site comes from the running product.</p>
+  </div>
+</footer>

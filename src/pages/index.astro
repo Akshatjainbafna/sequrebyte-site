@@ -1,0 +1,310 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+
+// Stroke icons, one family, 1.75 stroke. Colour comes from the chip.
+const icons = {
+  ok: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  bad: '<path d="M7 7l10 10M17 7L7 17"/>',
+  idle: '<circle cx="12" cy="12" r="8" stroke-dasharray="3 3"/>',
+  warn: '<path d="M8 20v-8.5a1.5 1.5 0 013 0V9a1.5 1.5 0 013 0v1a1.5 1.5 0 013 0v5.5c0 2.5-1.5 4.5-4.5 4.5H11c-1.5 0-2.5-.5-3-1.5l-2-3.2a1.4 1.4 0 012.2-1.6L8 15"/>',
+};
+const states = [
+  { k: 'ok', label: 'Satisfied' },
+  { k: 'bad', label: 'Failed' },
+  { k: 'idle', label: 'Not yet assessed' },
+  { k: 'warn', label: 'Needs manual evidence' },
+];
+
+const find = [
+  ['Crawls your web apps', 'including the parts behind a login.'],
+  ['Reads your dependencies', 'and SBOMs for known-vulnerable packages.'],
+  ['Checks AWS and Azure', 'against posture rules.'],
+  ['Watches certificates', 'so expiry is not a surprise.'],
+  ['Maps your external surface', 'subdomains and what is exposed.'],
+  ['Scans ports and signatures', 'on the targets you point it at.'],
+  ['Reviews firewall rulesets', 'for rules that should not be there.'],
+];
+const prove = [
+  ['Maps findings to controls', 'across the supported frameworks.'],
+  ['Keeps an evidence library', 'so one recording backs several controls.'],
+  ['Takes dated snapshots', 'to show what was true during the audit period.'],
+  ['Reports readiness', 'with the excluded count stated beside it.'],
+];
+---
+
+<Base
+  title="SequreByte | Know what you can prove, not just what you scanned"
+  description="SequreByte finds vulnerabilities, then turns the findings into audit evidence mapped to ISO/IEC 27001, SOC 2 and the RBI Cyber Security Framework."
+>
+  <Header home />
+
+  <main id="main">
+    <!-- HERO: sized to content, not the viewport -->
+    <section class="hero on-ink" aria-labelledby="h1">
+      <span class="blob b1" aria-hidden="true"></span>
+      <span class="blob b2" aria-hidden="true"></span>
+      <div class="wrap hero-grid">
+        <div>
+          <p class="pill"><i aria-hidden="true"></i>Vulnerability management + audit evidence</p>
+          <h1 id="h1">Know what you can <span class="mark">prove</span>, not just what you scanned.</h1>
+          <p class="lede">
+            SequreByte finds problems across your apps, cloud and network, then maps what it found onto
+            ISO 27001, SOC 2 and RBI controls so you can prove compliance with evidence.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" data-magnet href="#demo">Book a demo <span class="arrow" aria-hidden="true">&rarr;</span></a>
+            <a class="link-quiet" href="#how">
+              See how it works
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="stage" id="stage">
+          <canvas class="gl" data-lattice="hero" aria-hidden="true"></canvas>
+          <div class="tilt" id="tilt">
+            <!-- TODO: replace with the real, redacted Compliance page screenshot (WebP/AVIF, explicit width + height). -->
+            <figure class="shot" role="img" aria-label="Screenshot placeholder: the Compliance page showing the four control states">
+              <div><b>Screenshot goes here</b>Compliance page, four control states<br /><code>1600 &times; 1000 &middot; webp</code></div>
+            </figure>
+          </div>
+          <div class="hero-chips" aria-label="The four control states">
+            {states.map((s) => (
+              <span class={`chip ${s.k}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.k]} />
+                {s.label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="band" role="region" aria-label="Supported frameworks">
+      <div class="band-track">
+        <div class="band-set"><span>ISO/IEC 27001:2022</span><i></i><span>ISO/IEC 27001:2013</span><i></i><span>SOC 2</span><i></i><span>RBI Cyber Security Framework</span><i></i><span>ISO/IEC 27001:2022</span><i></i><span>ISO/IEC 27001:2013</span><i></i><span>SOC 2</span><i></i><span>RBI Cyber Security Framework</span><i></i></div>
+        <div class="band-set" aria-hidden="true"><span>ISO/IEC 27001:2022</span><i></i><span>ISO/IEC 27001:2013</span><i></i><span>SOC 2</span><i></i><span>RBI Cyber Security Framework</span><i></i><span>ISO/IEC 27001:2022</span><i></i><span>ISO/IEC 27001:2013</span><i></i><span>SOC 2</span><i></i><span>RBI Cyber Security Framework</span><i></i></div>
+      </div>
+    </div>
+
+    <!-- PROBLEM -->
+    <section class="problem" aria-labelledby="problem-h">
+      <div class="wrap problem-grid reveal">
+        <div>
+          <p class="eyebrow">The situation</p>
+          <h2 id="problem-h">Sound familiar?</h2>
+          <svg class="flow" viewBox="0 0 360 200" role="img" aria-label="Diagram: three scanners feed one spreadsheet, which is rebuilt by hand into audit evidence every cycle">
+            <circle class="node" cx="26" cy="40" r="11" /><circle class="node" cx="26" cy="100" r="11" /><circle class="node" cx="26" cy="160" r="11" />
+            <path class="line" d="M38 40 C110 40 110 100 168 100" /><path class="line" d="M38 100 H168" /><path class="line" d="M38 160 C110 160 110 100 168 100" />
+            <rect class="box" x="168" y="64" width="72" height="72" rx="8" />
+            <path class="ln" d="M168 88H240M168 112H240M192 64V136M216 64V136" />
+            <path class="line" d="M244 100 H304" />
+            <rect class="box" x="306" y="70" width="46" height="60" rx="6" /><path class="ln" d="M316 90H342M316 102H342M316 114H334" />
+            <path class="line loop" d="M329 66 C329 14 204 14 204 58" />
+            <text x="236" y="12">again, by hand</text>
+          </svg>
+        </div>
+        <div class="problem-stack stagger">
+          <p>You run <strong>two or three scanners</strong>, and each one has its own idea of what matters.</p>
+          <p>The findings end up in <strong>a spreadsheet</strong> that is out of date the day after you save it.</p>
+          <p>Then audit season arrives and you <strong>rebuild the same evidence by hand</strong>, again.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT IT DOES -->
+    <section class="what" id="how" aria-labelledby="what-h">
+      <div class="wrap">
+        <div class="what-head reveal">
+          <p class="eyebrow">What it does</p>
+          <h2 id="what-h">Two jobs, one workspace.</h2>
+          <p class="lede gap">Find the problem. Then prove you dealt with it.</p>
+        </div>
+        <div class="what-grid">
+          <div class="panel panel-find reveal" data-spot>
+            <h3 class="group-title">Find</h3>
+            <ul class="verbs stagger">
+              {find.map(([a, b]) => <li><span><b>{a}</b> <span>{b}</span></span></li>)}
+            </ul>
+          </div>
+          <div class="panel panel-prove reveal" data-spot>
+            <h3 class="group-title">Prove</h3>
+            <ul class="verbs stagger">
+              {prove.map(([a, b]) => <li><span><b>{a}</b> <span>{b}</span></span></li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HONEST READINESS -->
+    <section class="honest on-ink" id="readiness" aria-labelledby="honest-h">
+      <div class="wrap">
+        <div class="reveal">
+          <p class="eyebrow">Honest readiness</p>
+          <h2 id="honest-h">A readiness score that tells you what it could not check.</h2>
+          <p class="lede">
+            Most dashboards give you one reassuring percentage. SequreByte sorts every control into one of four
+            states, and only calculates readiness across the controls software can genuinely assess.
+            Controls that need a human to supply evidence are left out of the percentage, not quietly counted
+            as passes. A control nobody has scanned reads "not assessed", never green.
+          </p>
+        </div>
+
+        <div class="lattice-stage reveal" role="img" aria-label="Illustration: a 3D lattice of controls coloured by state. As you scroll, the controls that need manual evidence drift away from the lattice, showing they are excluded from the readiness percentage.">
+          <canvas class="gl" data-lattice="honest" aria-hidden="true"></canvas>
+          <div class="lattice-legend" aria-hidden="true">
+            <span>Illustration, not product data</span>
+            <span>Scroll: manual-evidence controls drift out of the percentage</span>
+          </div>
+        </div>
+
+        <div class="honest-grid">
+          <div class="reveal">
+            <!-- TODO: real screenshot of the four control states with the excluded-count caption visible. -->
+            <figure class="shot" role="img" aria-label="Screenshot placeholder: control states with the excluded count shown next to the readiness figure">
+              <div><b>Screenshot goes here</b>Four control states + excluded-count caption<br /><code>1600 &times; 1000 &middot; webp</code></div>
+            </figure>
+            <p class="caption">Readiness covers assessed controls only. The excluded count is shown next to every figure.</p>
+          </div>
+
+          <div class="explorer reveal">
+            <h3>Tap a state. Does it count?</h3>
+            <div class="explorer-btns">
+              {states.map((s) => (
+                <button type="button" class={`chip ${s.k}`} data-state={s.k} aria-pressed="false">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.k]} />
+                  {s.label}
+                </button>
+              ))}
+            </div>
+            <div class="explain" id="explain" aria-live="polite"><b>Pick a state</b>See whether it counts toward readiness, and watch those controls light up in the lattice above.</div>
+          </div>
+        </div>
+
+        <p class="lede reveal gap-lg">
+          When a verdict is inferred rather than backed by a per-check record, the product labels it as inferred.
+          Your auditor will ask. It is better if the tool says so first.
+        </p>
+      </div>
+    </section>
+
+    <!-- FRAMEWORKS + INTEGRATIONS -->
+    <section class="names" id="frameworks" aria-labelledby="names-h">
+      <div class="wrap names-grid">
+        <div class="reveal">
+          <p class="eyebrow">Frameworks</p>
+          <h2 id="names-h">Built for Indian regulatory reality.</h2>
+          <p class="lede gap">The RBI Cyber Security Framework sits next to ISO 27001 and SOC 2, not behind them. For a bank, NBFC, broker or insurer, that is often the deciding factor.</p>
+          <ul class="plain-list">
+            <li>ISO/IEC 27001:2022</li>
+            <li>ISO/IEC 27001:2013</li>
+            <li>SOC 2</li>
+            <li>RBI Cyber Security Framework</li>
+          </ul>
+          <p class="fine">More frameworks are being added.</p>
+        </div>
+        <div class="reveal">
+          <p class="eyebrow">Works with what you already run</p>
+          <h2>Three integrations. Named, not padded.</h2>
+          <p class="lede gap">Import the reports from the tools you already have, and keep everything in one place.</p>
+          <ul class="plain-list">
+            <li>Nessus</li>
+            <li>OpenVAS</li>
+            <li>SonarQube</li>
+          </ul>
+          <p class="fine">Plus report import for common scanner exports.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="who" aria-labelledby="who-h">
+      <div class="wrap">
+        <div class="reveal">
+          <p class="eyebrow">Who it's for</p>
+          <h2 id="who-h">Three teams, one less spreadsheet each.</h2>
+        </div>
+        <div class="who-grid reveal">
+          <div class="who-col">
+            <span class="n">01</span>
+            <h3>In-house security team</h3>
+            <p>Replace the pile of scanners and exports with one place that shows what is open and what it means for the audit.</p>
+          </div>
+          <div class="who-col">
+            <span class="n">02</span>
+            <h3>Compliance team</h3>
+            <p>Collect evidence once, attach it to every control it supports, and stop chasing screenshots for a quarter.</p>
+          </div>
+          <div class="who-col">
+            <span class="n">03</span>
+            <h3>VAPT consultancy</h3>
+            <p>Run engagements in the platform, and give each client a login to see their own results.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMO FORM -->
+    <section class="demo on-ink" id="demo" aria-labelledby="demo-h">
+      <div class="wrap demo-grid">
+        <div class="reveal">
+          <p class="eyebrow">Book a demo</p>
+          <h2 id="demo-h">See it on your kind of environment.</h2>
+          <p class="lede gap">
+            SequreByte needs real setup: cloud credentials, scan targets, the frameworks you answer to. So we
+            do it on a call, and you skip the empty workspace.
+          </p>
+        </div>
+
+        <div class="form-card reveal">
+          <form id="demo-form" novalidate data-endpoint={formEndpoint}>
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-err" />
+              <p class="err" id="name-err" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="email">Work email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-err" />
+              <p class="err" id="email-err" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="company">Company</label>
+              <input id="company" name="company" type="text" autocomplete="organization" required aria-describedby="company-err" />
+              <p class="err" id="company-err" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="solve">What are you trying to solve? <span class="opt">(optional)</span></label>
+              <textarea id="solve" name="solve" rows="4" aria-describedby="solve-help"></textarea>
+              <p class="help" id="solve-help">An upcoming RBI audit, ISO recertification, too many scanners. Anything helps.</p>
+            </div>
+            <!-- Honeypot: real users never see or fill this. -->
+            <div class="hp" aria-hidden="true">
+              <label for="website">Leave this empty</label>
+              <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+            <button class="btn btn-primary" data-magnet type="submit">Book a demo <span class="arrow" aria-hidden="true">&rarr;</span></button>
+            <p class="form-note">We will only use this to reply to you. See the <a href="/privacy">privacy policy</a>.</p>
+          </form>
+          <div class="form-status" id="form-status"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <script is:inline src="/js/site.js" defer></script>
+</Base>
+
+<script>
+  // Load three.js after first paint so it never competes with the hero text for LCP.
+  const start = () => import('../scripts/lattice.js').then(({ mount }) => {
+    document.querySelectorAll<HTMLCanvasElement>('canvas[data-lattice]').forEach((c) => mount(c, c.dataset.lattice!));
+  });
+  if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 1500 }); else setTimeout(start, 300);
+</script>

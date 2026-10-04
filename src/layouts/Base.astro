@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  noindex?: boolean;
+}
+const { title, description, path = '/', noindex = false } = Astro.props;
+const canonical = new URL(path, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
+// Cookie-free analytics. Set PUBLIC_PLAUSIBLE_DOMAIN at build time to enable.
+const plausible = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'SequreByte',
+  url: new URL('/', Astro.site).href,
+  // TODO: add logo URL, legal name and contactPoint once supplied.
+  description,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SequreByte" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap"
+    />
+
+    <script is:inline src="/js/boot.js"></script>
+    <script type="application/ld+json" set:html={JSON.stringify(org)} />
+    {plausible && <script defer data-domain={plausible} src="https://plausible.io/js/script.js" />}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <slot />
+  </body>
+</html>
