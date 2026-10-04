@@ -15,5 +15,7 @@ export default defineConfig({
   },
   vite: {
     build: { assetsInlineLimit: 0 },
+    // three is only imported lazily, so Vite would discover it late in dev, re-optimise and 504 the stale URL.
+    optimizeDeps: { include: ['three'] },
   },
 });
